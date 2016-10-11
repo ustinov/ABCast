@@ -32,35 +32,14 @@ var progressFlag = 1;
 var mediaCurrentTime = 0;
 var session = null;
 var storedSession = null;
-var mediaURLs = ['big_buck_bunny_1080p.mp4',
-                 'ED_1280.mp4',
-                 'tears_of_steel_1080p.mov',
-                 'reel_2012_1280x720.mp4',
-                 'Google%20IO%202011%2045%20Min%20Walk%20Out.mp3'];
-var mediaTitles = [
-    'Big Buck Bunny',
-    'Elephant Dream',
-    'Tears of Steel',
-    'Reel 2012',
-    'Google I/O 2011 Audio'];
-
-var mediaThumbs = [
-    'img/BigBuckBunny.jpg',
-    'img/ElephantsDream.jpg',
-    'img/TearsOfSteel.jpg',
-    'img/reel.jpg',
-    'img/google-io-2011.jpg'];
+var mediaURLs = ['big_buck_bunny_1080p.mp4'];
+var mediaTitles = ['Big Buck Bunny'];
+var mediaThumbs = ['img/BigBuckBunny.jpg'];
 var currentMediaURL = MEDIA_SOURCE_ROOT + mediaURLs[0];
 var currentMediaTitle = mediaTitles[0];
 var currentMediaThumb = mediaThumbs[0];
 
 var timer = null;
-
-var mediaSel = document.getElementById("media_selection");
-for (var i=0; i < mediaURLs.length; i++) {
-  mediaSel.innerHTML += ('\n<input name="media" onclick="selectMedia(' + i +
-                         ');" type="radio">' + mediaTitles[i] + '<br>');
-}
 
 /**
  * Call initialization
@@ -291,16 +270,6 @@ function stopApp() {
 }
 
 /**
- * load media specified by custom URL
- */
-function loadCustomMedia() {
-  var customMediaURL = document.getElementById('customMediaURL').value;
-  if (customMediaURL.length > 0) {
-    loadMedia(customMediaURL);
-  }
-}
-
-/**
  * load media
  * @param {string} mediaURL media URL string
  * @this loadMedia
@@ -312,10 +281,10 @@ function loadMedia(mediaURL) {
     return;
   }
 
-  var customMediaURL = document.getElementById('customMediaURL').value;
+  var media_url = document.getElementById('media_url').value;
 
-  if (mediaURL || customMediaURL.length > 0) {
-    mediaURL = mediaURL || customMediaURL;
+  if (mediaURL || media_url.length > 0) {
+    mediaURL = mediaURL || media_url;
     var mediaInfo = new chrome.cast.media.MediaInfo(mediaURL);
     currentMediaTitle = mediaURL.split('/').pop();
     currentMediaThumb = 'img/video_icon.png';
@@ -329,7 +298,8 @@ function loadMedia(mediaURL) {
   }
   mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
   mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
-  mediaInfo.contentType = 'video/mp4';
+  mediaInfo.contentType = document.getElementById('mime_type').value ||
+                          'video/mp4';
 
   mediaInfo.metadata.title = currentMediaTitle;
   mediaInfo.metadata.images = [{'url': MEDIA_SOURCE_ROOT + 'sample/' +
@@ -619,6 +589,6 @@ function mediaCommandSuccessCallback(info) {
  * @param {string} message A message string
  */
 function appendMessage(message) {
-  var dw = document.getElementById('debugmessage');
+  var dw = document.getElementById('console');
   dw.innerHTML += '\n' + JSON.stringify(message);
 }

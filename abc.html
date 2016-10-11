@@ -11,38 +11,33 @@
   <div id="right">
     <h2>ABCDE &mdash; A Basic Cast Dev Example</h2>
     <div id="session_control">
-      <button onclick="launchApp()">Launch app</button>
-      <button onclick="stopApp()">Stop app</button>
+      <button onclick="launchApp()">Launch App</button>
+      <button onclick="stopApp()">Stop App</button>
       <button id="joinsessionbyid" onclick="joinSessionBySessionId()">
-        Join by session ID
+        Join by Session ID
       </button>
     </div>
     <div id="media_selection">
-      <span>Custom MIME Type:</span>
-      <input id="media_mime_type" name="media_mime_type" size="30" type="text"
-             value="">
+      <span>URL:</span>
+      <input id="media_url" name="media_url" size="70" type="text" value="">
       <br>
-      <input checked name="media" type="radio">
-      <span>Custom URL:</span>
-      <input id="customMediaURL" name="customMediaURL" size="70" type="text"
-             value="">
-      <br>
+      <span>MIME Type:</span>
+      <input id="mime_type" name="mime_type" size="30" type="text" value="">
     </div>
     <div id="playback_control">
-      <button onclick="loadMedia()">Load media</button>
+      <button onclick="loadMedia()">Load Media</button>
       <button id="playpauseresume" onclick="playMedia()">Play</button>
-      <button onclick="stopMedia()">Stop media</button>
-      <button id="muteunmute" onclick="muteMedia();">Mute media</button>
-      <button id="getstatus" onclick="getMediaStatus();">
-        Get media status
-      </button>
-      <div>Volume control:</div>
-      <input max="100" min="0" step="1" type="range"
-             onmouseup="setReceiverVolume(1-this.value/100,false);">
+      <button onclick="stopMedia()">Stop Media</button>
+      <button id="muteunmute" onclick="muteMedia();">Mute Media</button>
+      <button id="getstatus" onclick="getMediaStatus();">Get Status</button>
+      <br>
+      <span>Volume control:</span>
+      <input max="1" min="0" step="0.01" type="range"
+             onmouseup="setReceiverVolume(this.value, false);">
+      <span>Progress:</span>
+      <input id="progress" max="100" min="0" step="1" type="range" value="0"
+             onmouseup="seekMedia(this.value);">
     </div>
-    <span>Progress:</span>
-    <input id="progress" max="100" min="1" step="1" type="range" value="1"
-           onmouseup="seekMedia(this.value);">
     <div id="status">
       <span id="duration"></span>
       <div id="progress_tick"></div>
@@ -56,7 +51,7 @@
     </a>
   </div>
   <div id="left">
-    <textarea id="debugmessage" cols="80" rows="60"></textarea>
+    <textarea id="console" cols=80 rows=60 readonly></textarea>
   </div>
   <script src="abc.js"></script>
 </body>
