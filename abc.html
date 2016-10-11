@@ -8,10 +8,7 @@
 </head>
 
 <body>
-  <div id="lpane">
-    <textarea id="debugmessage" cols="80" rows="60"></textarea>
-  </div>
-  <div id="rpane">
+  <div id="right">
     <h2>ABCDE &mdash; A Basic Cast Dev Example</h2>
     <div id="session_control">
       <button onclick="launchApp()">Launch app</button>
@@ -21,11 +18,12 @@
       </button>
     </div>
     <div id="media_selection">
-      <span>Custom Media MIME Type::</span>
+      <span>Custom MIME Type:</span>
       <input id="media_mime_type" name="media_mime_type" size="30" type="text"
              value="">
+      <br>
       <input checked name="media" type="radio">
-      <span>Custom Media URL:</span>
+      <span>Custom URL:</span>
       <input id="customMediaURL" name="customMediaURL" size="70" type="text"
              value="">
       <br>
@@ -38,20 +36,27 @@
       <button id="getstatus" onclick="getMediaStatus();">
         Get media status
       </button>
+      <div>Volume control:</div>
       <input max="100" min="0" step="1" type="range"
              onmouseup="setReceiverVolume(1-this.value/100,false);">
-      <div>Volume control</div>
     </div>
-    Progress:
+    <span>Progress:</span>
     <input id="progress" max="100" min="1" step="1" type="range" value="1"
            onmouseup="seekMedia(this.value);">
     <div id="status">
       <span id="duration"></span>
       <div id="progress_tick"></div>
-      State:
+      <span>State:</span>
       <span id="playerstate">IDLE</span>
       <img id="casticon" src="img/cast_icon_idle.png" width="30">
     </div>
+    <span>This example has been forked from </span>
+    <a href="https://github.com/googlecast/CastHelloVideo-chrome">
+      CastHelloVideo-chrome
+    </a>
+  </div>
+  <div id="left">
+    <textarea id="debugmessage" cols="80" rows="60"></textarea>
   </div>
   <script src="abc.js"></script>
 </body>
