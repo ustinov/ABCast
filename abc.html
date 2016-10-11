@@ -2,90 +2,58 @@
 <html>
 
 <head>
-  <title>ABCDE (Another Basic Cast Dev Example).</title>
   <link rel="stylesheet" type="text/css" href="abc.css">
   <script src="//gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
-  <script src="abc.js"></script>
+  <title>ABCDE (Another Basic Cast Dev Example).</title>
 </head>
 
 <body>
-  <div>
-    <div>
-      <h2>A Basic Cast Dev Example</h2>
-      <div>
-        <h3>Choose a media below or enter your own media URL to cast</h3>
-        <br>
-        <span>Enter custom media URL</span>:
-        <input id="customMediaURL" name="customMediaURL" size="70" type="text"
-               value="">
-        <br>
-        <input name="loadCustomMeida" onclick="loadCustomMedia();"
-               type="submit" value="Load Custom Media">
-      </div>
-      <br>
-      <div>
-        <div>
-          <input checked name="media" onclick="selectMedia(0);" type="radio">
-          Big Buck Bunny MP4
-          <br>
-          <input name="media" onclick="selectMedia(1);" type="radio">
-          Elephants Dream MP4
-          <br>
-          <input name="media" onclick="selectMedia(2);" type="radio">
-          Tears of Steel MOV
-          <br>
-          <input name="media" onclick="selectMedia(3);" type="radio">
-          Reel MP4
-          <br>
-          <input name="media" onclick="selectMedia(4);" type="radio">
-          Google I/O 2011 MP3
-          <br>
-        </div>
-        <div>
-          <img id="thumb" src="img/bunny.jpg" width="250">
-          <img id="casticon" src="img/cast_icon_idle.png" width="30">
-        </div>
-      </div>
-      <div>
-        <div>
-          <button onclick="launchApp()">Launch app</button>
-          <button onclick="stopApp()">Stop app</button>
-          <button id="joinsessionbyid" onclick="joinSessionBySessionId()">
-            Join by session ID
-          </button>
-          <br>
-          <button onclick="loadMedia()">Load media</button>
-          <button id="playpauseresume" onclick="playMedia()">Play</button>
-          <button onclick="stopMedia()">Stop media</button>
-          <button id="muteunmute" onclick="muteMedia();">Mute media</button>
-          <button id="getstatus" onclick="getMediaStatus();">
-            Get media status
-          </button>
-        </div>
-        <div>
-          <input class="vertical" max="100" min="0" step="1" type="range"
-                 onmouseup="setReceiverVolume(1-this.value/100,false);">
-          <div class="vertical">Volume control</div>
-        </div>
-      </div>
+  <div id="lpane">
+    <textarea id="debugmessage" cols="80" rows="60"></textarea>
+  </div>
+  <div id="rpane">
+    <h2>ABCDE &mdash; A Basic Cast Dev Example</h2>
+    <div id="session_control">
+      <button onclick="launchApp()">Launch app</button>
+      <button onclick="stopApp()">Stop app</button>
+      <button id="joinsessionbyid" onclick="joinSessionBySessionId()">
+        Join by session ID
+      </button>
     </div>
-    <div>
-      <div>
-        Progress:
-        <input id="progress" max="100" min="1" step="1" type="range" value="1"
-               onmouseup="seekMedia(this.value);">
-        <span id="duration"></span>
-        <div id="progress_tick"></div>
-      </div>
-      <div>
-        State:
-        <span id="playerstate">IDLE</span>
-      </div>
-      <div>
-        <textarea id="debugmessage" cols="80" rows="20"></textarea>
-      </div>
+    <div id="media_selection">
+      <span>Custom Media MIME Type::</span>
+      <input id="media_mime_type" name="media_mime_type" size="30" type="text"
+             value="">
+      <input checked name="media" type="radio">
+      <span>Custom Media URL:</span>
+      <input id="customMediaURL" name="customMediaURL" size="70" type="text"
+             value="">
+      <br>
+    </div>
+    <div id="playback_control">
+      <button onclick="loadMedia()">Load media</button>
+      <button id="playpauseresume" onclick="playMedia()">Play</button>
+      <button onclick="stopMedia()">Stop media</button>
+      <button id="muteunmute" onclick="muteMedia();">Mute media</button>
+      <button id="getstatus" onclick="getMediaStatus();">
+        Get media status
+      </button>
+      <input max="100" min="0" step="1" type="range"
+             onmouseup="setReceiverVolume(1-this.value/100,false);">
+      <div>Volume control</div>
+    </div>
+    Progress:
+    <input id="progress" max="100" min="1" step="1" type="range" value="1"
+           onmouseup="seekMedia(this.value);">
+    <div id="status">
+      <span id="duration"></span>
+      <div id="progress_tick"></div>
+      State:
+      <span id="playerstate">IDLE</span>
+      <img id="casticon" src="img/cast_icon_idle.png" width="30">
     </div>
   </div>
+  <script src="abc.js"></script>
 </body>
 
 </html>

@@ -14,14 +14,14 @@ var SESSION_IDLE_TIMEOUT = 300000;
  * Media source root URL
  **/
 var MEDIA_SOURCE_ROOT =
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/';
+    'http://commondatastorage.googleapis.com/gtv-videos-bucket/';
 
 // Cast icon thumbnail active
-var CAST_ICON_THUMB_ACTIVE = 'images/cast_icon_active.png';
+var CAST_ICON_THUMB_ACTIVE = 'img/cast_icon_active.png';
 // Cast icon thumbnail idle
-var CAST_ICON_THUMB_IDLE = 'images/cast_icon_idle.png';
+var CAST_ICON_THUMB_IDLE = 'img/cast_icon_idle.png';
 // Cast icon thumbnail warning
-var CAST_ICON_THUMB_WARNING = 'images/cast_icon_warning.png';
+var CAST_ICON_THUMB_WARNING = 'img/cast_icon_warning.png';
 
 /**
  * global variables
@@ -32,12 +32,11 @@ var progressFlag = 1;
 var mediaCurrentTime = 0;
 var session = null;
 var storedSession = null;
-var mediaURLs = [
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/big_buck_bunny_1080p.mp4',
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/ED_1280.mp4',
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/tears_of_steel_1080p.mov',
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/reel_2012_1280x720.mp4',
-    'http://commondatastorage.googleapis.com/gtv-videos-bucket/Google%20IO%202011%2045%20Min%20Walk%20Out.mp3'];
+var mediaURLs = ['big_buck_bunny_1080p.mp4',
+                 'ED_1280.mp4',
+                 'tears_of_steel_1080p.mov',
+                 'reel_2012_1280x720.mp4',
+                 'Google%20IO%202011%2045%20Min%20Walk%20Out.mp3'];
 var mediaTitles = [
     'Big Buck Bunny',
     'Elephant Dream',
@@ -46,16 +45,22 @@ var mediaTitles = [
     'Google I/O 2011 Audio'];
 
 var mediaThumbs = [
-    'images/BigBuckBunny.jpg',
-    'images/ElephantsDream.jpg',
-    'images/TearsOfSteel.jpg',
-    'images/reel.jpg',
-    'images/google-io-2011.jpg'];
-var currentMediaURL = mediaURLs[0];
+    'img/BigBuckBunny.jpg',
+    'img/ElephantsDream.jpg',
+    'img/TearsOfSteel.jpg',
+    'img/reel.jpg',
+    'img/google-io-2011.jpg'];
+var currentMediaURL = MEDIA_SOURCE_ROOT + mediaURLs[0];
 var currentMediaTitle = mediaTitles[0];
 var currentMediaThumb = mediaThumbs[0];
 
 var timer = null;
+
+var mediaSel = document.getElementById("media_selection");
+for (var i=0; i < mediaURLs.length; i++) {
+  mediaSel.innerHTML += ('\n<input name="media" onclick="selectMedia(' + i +
+                         ');" type="radio">' + mediaTitles[i] + '<br>');
+}
 
 /**
  * Call initialization
@@ -70,10 +75,7 @@ if (!chrome.cast || !chrome.cast.isAvailable) {
 function initializeCastApi() {
   // default app ID to the default media receiver app
   // optional: you may change it to your own app ID/receiver
-  var applicationIDs = [
-      chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID
-    ];
-
+  var applicationIDs = [chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID];
 
   // auto join policy can be one of the following three
   // 1) no auto join
@@ -207,11 +209,12 @@ function receiverListener(e) {
 function selectMedia(m) {
   console.log('media selected' + m);
   appendMessage('media selected' + m);
-  currentMediaURL = mediaURLs[m];
+  currentMediaURL = MEDIA_SOURCE_ROOT + mediaURLs[m];
   currentMediaTitle = mediaTitles[m];
   currentMediaThumb = mediaThumbs[m];
   var playpauseresume = document.getElementById('playpauseresume');
-  document.getElementById('thumb').src = MEDIA_SOURCE_ROOT + mediaThumbs[m];
+  document.getElementById('thumb').src = MEDIA_SOURCE_ROOT + 'sample/' +
+                                         mediaThumbs[m];
 }
 
 /**
@@ -309,12 +312,15 @@ function loadMedia(mediaURL) {
     return;
   }
 
-  if (mediaURL) {
+  var customMediaURL = document.getElementById('customMediaURL').value;
+
+  if (mediaURL || customMediaURL.length > 0) {
+    mediaURL = mediaURL || customMediaURL;
     var mediaInfo = new chrome.cast.media.MediaInfo(mediaURL);
-    currentMediaTitle = 'custom title needed';
-    currentMediaThumb = 'images/video_icon.png';
-    document.getElementById('thumb').src = MEDIA_SOURCE_ROOT +
-        currentMediaThumb;
+    currentMediaTitle = mediaURL.split('/').pop();
+    currentMediaThumb = 'img/video_icon.png';
+    document.getElementById('thumb').src = MEDIA_SOURCE_ROOT + 'sample/' +
+                                           currentMediaThumb;
   }
   else {
     console.log('loading...' + currentMediaURL);
@@ -326,7 +332,8 @@ function loadMedia(mediaURL) {
   mediaInfo.contentType = 'video/mp4';
 
   mediaInfo.metadata.title = currentMediaTitle;
-  mediaInfo.metadata.images = [{'url': MEDIA_SOURCE_ROOT + currentMediaThumb}];
+  mediaInfo.metadata.images = [{'url': MEDIA_SOURCE_ROOT + 'sample/' +
+                                       currentMediaThumb}];
 
   var request = new chrome.cast.media.LoadRequest(mediaInfo);
   request.autoplay = true;
