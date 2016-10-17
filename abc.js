@@ -287,9 +287,6 @@ function loadMedia(mediaURL) {
     mediaURL = mediaURL || media_url;
     var mediaInfo = new chrome.cast.media.MediaInfo(mediaURL);
     currentMediaTitle = mediaURL.split('/').pop();
-    currentMediaThumb = 'img/video_icon.png';
-    document.getElementById('thumb').src = MEDIA_SOURCE_ROOT + 'sample/' +
-                                           currentMediaThumb;
   }
   else {
     console.log('loading...' + currentMediaURL);
