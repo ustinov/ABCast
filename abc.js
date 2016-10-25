@@ -34,10 +34,8 @@ var session = null;
 var storedSession = null;
 var mediaURLs = ['big_buck_bunny_1080p.mp4'];
 var mediaTitles = ['Big Buck Bunny'];
-var mediaThumbs = ['img/BigBuckBunny.jpg'];
 var currentMediaURL = MEDIA_SOURCE_ROOT + mediaURLs[0];
 var currentMediaTitle = mediaTitles[0];
-var currentMediaThumb = mediaThumbs[0];
 
 var timer = null;
 
@@ -190,10 +188,7 @@ function selectMedia(m) {
   appendMessage('media selected' + m);
   currentMediaURL = MEDIA_SOURCE_ROOT + mediaURLs[m];
   currentMediaTitle = mediaTitles[m];
-  currentMediaThumb = mediaThumbs[m];
   var playpauseresume = document.getElementById('playpauseresume');
-  document.getElementById('thumb').src = MEDIA_SOURCE_ROOT + 'sample/' +
-                                         mediaThumbs[m];
 }
 
 /**
@@ -299,8 +294,8 @@ function loadMedia(mediaURL) {
                           'video/mp4';
 
   mediaInfo.metadata.title = currentMediaTitle;
-  mediaInfo.metadata.images = [{'url': MEDIA_SOURCE_ROOT + 'sample/' +
-                                       currentMediaThumb}];
+  //mediaInfo.metadata.images = [{'url': MEDIA_SOURCE_ROOT + 'sample/' +
+  //                                     currentMediaThumb}];
 
   var request = new chrome.cast.media.LoadRequest(mediaInfo);
   request.autoplay = true;
